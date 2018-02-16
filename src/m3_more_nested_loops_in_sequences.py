@@ -45,6 +45,9 @@ def run_test_largest_number():
 
     # TO DO 2 (continued): Add your ADDITIONAL test(s) here:
 
+    expected = 3
+    answer = largest_number(([1], [2, 3], []))
+    print('Expected and actual are:', expected, answer)
 
 def largest_number(seq_seq):
     """
@@ -72,25 +75,26 @@ def largest_number(seq_seq):
     where each subsequence contains only numbers.
     """
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     # ------------------------------------------------------------------
-
-    s = seq_seq[0]
-    max = s[0]
-    l = len(seq_seq)
-    for k in range(l):
-        sub = seq_seq[k]
-        ls = len(sub)
-        for j in range(ls):
-            if sub[j] > max :
-                max = sub[j]
+    max = None
+    for k in range(len(seq_seq)):
+        sub_seq = seq_seq[k]
+        if len(seq_seq) > 0 and max is None:
+            if len(sub_seq) > 0:
+                max = seq_seq[k][0]
+        if max is not None:
+            for j in range(len(sub_seq)):
+                if sub_seq[j] > max:
+                    max = sub_seq[j]
     return max
+
 
 def run_test_largest_negative_number():
     """ Tests the    largest_negative_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 4. Implement this TEST function.
+    # DONE: 4. Implement this TEST function.
     #   It TESTS the  largest_negative_number  function defined below.
     #
     #   Include enough tests to give you confidence that your solution
@@ -101,6 +105,22 @@ def run_test_largest_negative_number():
     print('Testing the   LARGEST_NEGATIVE_NUMBER   function:')
     print('-------------------------------------------------')
 
+    # Test 1:
+    expected = -1
+    answer = largest_negative_number([(3, -1, 4),
+                             (-1, 5, -9, 2),
+                             [-6, 5, -3, 5]])
+    print('Expected and actual are:', expected, answer)
+
+    # Test 2:
+    expected = -1
+    answer = largest_negative_number(([-1], []))
+    print('Expected and actual are:', expected, answer)
+
+    # Test 3:
+    expected = None
+    answer = largest_negative_number(([], [], []))
+    print('Expected and actual are:', expected, answer)
 
 def largest_negative_number(seq_seq):
     """
@@ -133,17 +153,19 @@ def largest_negative_number(seq_seq):
     #   give sequence of sequences plus any non-list variables you want).
     # ------------------------------------------------------------------
 
-    s = seq_seq[0]
-    max = s[0]
-    l = len(seq_seq)
-    for k in range(l):
-        sub = seq_seq[k]
-        ls = len(sub)
-        for j in range(ls):
-            if sub[j] < 0:
-                if sub[j] > max:
-                    max = sub[j]
-    return max
+    negs = False
+    max_neg = 0
+    for j in range(len(seq_seq)):
+        for k in range(len(seq_seq[j])):
+            if seq_seq[j][k] < 0:
+                max_neg = seq_seq[j][k]
+                negs = True
+            if (seq_seq[j][k] < 0) & (seq_seq[j][k] > max_neg):
+                max_neg = seq_seq[j][k]
+    if negs == True:
+        return max_neg
+    else:
+        return None
 
 def run_test_first_is_elsewhere_too():
     """ Tests the    first_is_elsewhere_too    function. """
@@ -392,7 +414,16 @@ def first_is_elsewhere_too(seq_seq):
     #   practice at loops within loops (within loops within ...)
     # ------------------------------------------------------------------
 
+    mult = False
+    for j in range(1, len(seq_seq)):
+        for k in range(len(seq_seq[j])):
+            sub = seq_seq[j]
+            i = sub[k]
+            for l in range(len(seq_seq[0])):
+                if i == seq_seq[0][l]:
+                    mult = True
 
+    return mult
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # ----------------------------------------------------------------------
